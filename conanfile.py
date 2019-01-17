@@ -29,7 +29,11 @@ class CmsisConan(ConanFile):
             os.unlink(src)
 
         cmake = CMake(self)
-        cmake.configure()
+
+        cmake.configure(defs={
+            "ARCHITECTURE": self.settings.arch
+        })
+
         cmake.build()
 
     def package(self):

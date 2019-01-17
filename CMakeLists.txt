@@ -22,7 +22,8 @@ file(GLOB_RECURSE CMSIS_DSP_S_SOURCES CMSIS_5/CMSIS/DSP/Source/*.S)
 add_library(
         CMSIS-DSP
         ${CMSIS_DSP_C_SOURCES}
-        ${CMSIS_DSP_S_SOURCES}
+        ${CMSIS_DSP_S_SOURCES} # Will only be compiled for ARM
+        arm_bitreversal.c # Will only be compiled for native
 )
 
 target_include_directories(
@@ -32,29 +33,55 @@ target_include_directories(
         CMSIS_5/CMSIS/Core/Include
 )
 
-if (NOT CMAKE_CROSSCOMPILING)
-    target_compile_definitions(
-            CMSIS-DSP
-            PRIVATE
-            -D__ARM_ARCH_6M__ # Compile as Cortex M0
-    )
+string(TOLOWER "${ARCHITECTURE}" ARCH)
 
-    # Optimize code for the same instruction set as we compile on
+if (ARCH STREQUAL "cortex-m0" OR ARCH STREQUAL "cortex-m1")
+    # Cortex M0, M0+ and M1
+    set(ARM_ARCH_FLAG "__ARM_ARCH_6M__")
+    set(ARCH "armv6-m")
+    set(TUNE "cortex-m0") #TODO: can optimize further with M0+/M1
+elseif (ARCH STREQUAL "cortex-m3")
+    # Cortex M3
+    set(ARM_ARCH_FLAG "__ARM_ARCH_7M__")
+    set(ARCH "armv7-m")
+    set(TUNE "cortex-m3")
+elseif(ARCH STREQUAL "cortex-m4")
+    # Cortex M4 (without floating point)
+    set(ARM_ARCH_FLAG "__ARM_ARCH_7M__")
+    set(ARCH "armv7-m")
+    set(TUNE "cortex-m4")
+elseif (ARCH STREQUAL "cortex-m4f")
+    # Cortex M4F
+    set(ARM_ARCH_FLAG "__ARM_ARCH_7EM__")
+    set(ARCH "armv7e-m")
+    set(TUNE "cortex-m4")
+else ()
+    # Native platform?
+    set(ARM_ARCH_FLAG "__ARM_ARCH_6M__") # Compile as Cortex M0
+    set(ARCH "native")
+    set(TUNE "native")
+endif (ARCH)
+
+# conan/conans/client/conf/__init__.py
+
+message("Target CPU ARCH set to '${ARCH}', adding compile definition -D${ARM_ARCH_FLAG}")
+
+target_compile_definitions(
+        CMSIS-DSP
+        PUBLIC
+        -D${ARM_ARCH_FLAG}
+)
+
+if (ARCH STREQUAL "")
+    message(WARNING "No ARCH set")
+else ()
+    message("Setting -march=${ARCH} and -mtune=${TUNE}")
+
+    # Optimize code for given architecture
     # This will make the library non-portable, but potentially much faster due to advanced SIMD instructions
     target_compile_options(
             CMSIS-DSP
-            PRIVATE
-            -march=native -mtune=native
+            PUBLIC
+            -march=${ARCH} -mtune=${TUNE}
     )
-
-    #
-    # Add bitreversal reference function, which is only available in ARM assembly otherwise
-    #
-    target_sources(
-            CMSIS-DSP
-            PRIVATE
-            arm_bitreversal.c
-    )
-
-endif ()
-
+endif (ARCH STREQUAL "")
