@@ -11,7 +11,7 @@ class CmsisConan(ConanFile):
     url = "https://github.com/ARM-software/CMSIS_5"
     homepage = "http://www.keil.com/pack/doc/CMSIS/DSP/html/index.html"
     description = "A suite of common signal processing functions for use on Cortex-M processor based devices"
-    exports = ["CMakeLists.txt", "arm_bitreversal.c"]
+    exports = ["CMakeLists.txt", "arm_bitreversal.c", "arm-none-eabi.cmake"]
     topics = ("arm", "dsp", "cmsis")
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
@@ -23,8 +23,10 @@ class CmsisConan(ConanFile):
         os.rename("CMSIS_5-{}".format(self.version), "CMSIS_5")
 
     def build(self):
-        shutil.copy("{}/CMakeLists.txt".format(os.path.dirname(os.path.abspath(__file__))),
-                    "{}/CMakeLists.txt".format(os.curdir))
+        for file in self.exports    :
+            src = "{}/{}".format(os.path.dirname(os.path.abspath(__file__)), file)
+            shutil.copy(src, "{}/{}".format(os.curdir, file))
+            os.unlink(src)
 
         cmake = CMake(self)
         cmake.configure()

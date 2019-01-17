@@ -1,4 +1,14 @@
 cmake_minimum_required(VERSION 3.13)
+
+SET(ARCHITECTURE "native" CACHE STRING "Some user-specified option")
+
+if (ARCHITECTURE STREQUAL "native")
+    message(WARNING "Compiling for native platform")
+else ()
+    # Include cross compiling toolchain
+    include(arm-none-eabi.cmake)
+endif ()
+
 project(CMSIS C CXX)
 
 set(CMAKE_C_STANDARD 11)
