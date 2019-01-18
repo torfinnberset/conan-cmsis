@@ -47,14 +47,22 @@ elseif (ARCH STREQUAL "cortex-m3")
     set(TUNE "cortex-m3")
 elseif(ARCH STREQUAL "cortex-m4")
     # Cortex M4 (without floating point)
-    set(ARM_ARCH_FLAG "__ARM_ARCH_7M__")
-    set(ARCH "armv7-m")
+    set(ARM_ARCH_FLAG "__ARM_ARCH_7EM__")
+    set(ARCH "armv7e-m")
     set(TUNE "cortex-m4")
 elseif (ARCH STREQUAL "cortex-m4f")
     # Cortex M4F
     set(ARM_ARCH_FLAG "__ARM_ARCH_7EM__")
     set(ARCH "armv7e-m")
     set(TUNE "cortex-m4")
+
+    # Enable floating point co-processor
+    target_compile_definitions(
+        CMSIS-DSP
+        PUBLIC
+        -D__FPU_PRESENT
+        -D__FPU_USED
+    )
 else ()
     # Native platform?
     set(ARM_ARCH_FLAG "__ARM_ARCH_6M__") # Compile as Cortex M0
