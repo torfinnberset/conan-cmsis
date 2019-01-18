@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.13)
 
-SET(ARCHITECTURE "native" CACHE STRING "Some user-specified option")
+SET(ARCHITECTURE "x86_64" CACHE STRING "Some user-specified option")
 
-if (ARCHITECTURE STREQUAL "native")
-    message(WARNING "Compiling for native platform")
+if (ARCHITECTURE STREQUAL "x86_64")
+    message(WARNING "Compiling for native platform, probably")
 else ()
     # Include cross compiling toolchain
     include(arm-none-eabi.cmake)
