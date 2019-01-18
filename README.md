@@ -2,6 +2,13 @@
 Author: Torfinn Berset, 2019
 
 A [Conan](https://conan.io) package for the [ARM CMSIS DSP](https://github.com/ARM-software/CMSIS_5) library, which can be compiled for x86 as well as for ARM architectures.
+Currently, the build assumes a _Little Endian_ architecture.
+
+# Cortex-M target
+
+To build for ARM Cortex-M, you need an ARM-GCC toolchain.
+- [Homebrew (macOS) version](https://github.com/torfinnberset/homebrew-embedded)
+- [Other versions](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm) 
 
 # x86 target 
 
