@@ -6,10 +6,10 @@ import shutil
 class CmsisConan(ConanFile):
     name = "CMSIS-DSP"
     version = "1.5.3"  # DSP package version
-    git_sha = "362bc60946c5626b3f090249a181bed480c86e47"  # origin/develop branch currently
+    git_sha = "f3f1c6c7e23218b0153b0120bf2fad3322bee6c2"  # origin/develop branch currently
     license = "Apache-2.0"
     author = "Torfinn Berset <torfinn@bloomlife.com>"
-    url = "https://github.com/ARM-software/CMSIS_5"
+    url = "https://github.com/torfinnberset/CMSIS_5"
     homepage = "http://www.keil.com/pack/doc/CMSIS/DSP/html/index.html"
     description = "A suite of common signal processing functions for use on Cortex-M processor based devices"
     exports = ["CMakeLists.txt", "arm_bitreversal.c", "arm-none-eabi.cmake"]
