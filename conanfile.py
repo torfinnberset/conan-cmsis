@@ -6,7 +6,7 @@ import shutil
 class CmsisConan(ConanFile):
     name = "CMSIS-DSP"
     version = "1.5.3"  # DSP package version
-    git_sha = "f3f1c6c7e23218b0153b0120bf2fad3322bee6c2"  # origin/develop branch currently
+    git_sha = "205984010fc4d3e3dee0e3718cee1a995e1bfecf"  # origin/develop branch currently
     license = "Apache-2.0"
     author = "Torfinn Berset <torfinn@bloomlife.com>"
     url = "https://github.com/torfinnberset/CMSIS_5"
