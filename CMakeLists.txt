@@ -26,11 +26,15 @@ add_library(
         arm_bitreversal.c # Will only be compiled for native
 )
 
+# https://foonathan.net/blog/2018/10/17/cmake-warnings.html
 target_include_directories(
         CMSIS-DSP
-        PUBLIC
-        CMSIS_5/CMSIS/DSP/Include
-        CMSIS_5/CMSIS/Core/Include
+        PRIVATE
+            CMSIS_5/CMSIS/DSP/Include
+            CMSIS_5/CMSIS/Core/Include
+        SYSTEM INTERFACE
+            CMSIS_5/CMSIS/DSP/Include
+            CMSIS_5/CMSIS/Core/Include
 )
 
 string(TOLOWER "${ARCHITECTURE}" ARCH)
@@ -68,7 +72,7 @@ else ()
     set(ARM_ARCH_FLAG "__ARM_ARCH_6M__") # Compile as Cortex M0
     set(ARCH "native")
     set(TUNE "native")
-endif (ARCH)
+endif (ARCH STREQUAL "cortex-m0" OR ARCH STREQUAL "cortex-m1")
 
 # conan/conans/client/conf/__init__.py
 
