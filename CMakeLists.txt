@@ -9,7 +9,7 @@ else ()
     include(arm-none-eabi.cmake)
 endif ()
 
-project(CMSIS C CXX)
+project(CMSIS C CXX ASM)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
@@ -73,8 +73,6 @@ else ()
     set(ARCH "native")
     set(TUNE "native")
 endif (ARCH STREQUAL "cortex-m0" OR ARCH STREQUAL "cortex-m1")
-
-# conan/conans/client/conf/__init__.py
 
 message("Target CPU ARCH set to '${ARCH}', adding compile definition -D${ARM_ARCH_FLAG}")
 
