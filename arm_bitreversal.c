@@ -1,5 +1,3 @@
-#if defined(__x86_64__)
-
 #include "arm_math.h"
 // These functions functions are originally implemented in ARM CM assembly
 
@@ -57,5 +55,3 @@ void arm_bitreversal_32(uint32_t *pSrc, const uint16_t bitRevLen, const uint16_t
         r3--;
     }
 }
-
-#endif

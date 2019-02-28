@@ -16,15 +16,18 @@ set(CMAKE_CXX_STANDARD 17)
 
 ################################################################################################################
 
-file(GLOB_RECURSE CMSIS_DSP_C_SOURCES CMSIS_5/CMSIS/DSP/Source/*.c)
-file(GLOB_RECURSE CMSIS_DSP_S_SOURCES CMSIS_5/CMSIS/DSP/Source/*.S)
+file(GLOB_RECURSE CMSIS_DSP_SOURCES CMSIS_5/CMSIS/DSP/Source/*.c)
 
-add_library(
-        CMSIS-DSP
-        ${CMSIS_DSP_C_SOURCES}
-        ${CMSIS_DSP_S_SOURCES} # Will only be compiled for ARM
-        arm_bitreversal.c # Will only be compiled for native
-)
+if (ARCHITECTURE STREQUAL "x86_64")
+    # Will only be compiled for native
+    list(APPEND CMSIS_DSP_SOURCES arm_bitreversal.c)
+else ()
+    # Will only be compiled for ARM
+    file(GLOB_RECURSE ASM_SOURCES CMSIS_5/CMSIS/DSP/Source/*.S)
+    list(APPEND CMSIS_DSP_SOURCES ${ASM_SOURCES})
+endif ()
+
+add_library(CMSIS-DSP ${CMSIS_DSP_SOURCES})
 
 # https://foonathan.net/blog/2018/10/17/cmake-warnings.html
 target_include_directories(
@@ -49,7 +52,7 @@ elseif (ARCH STREQUAL "cortex-m3")
     set(ARM_ARCH_FLAG "__ARM_ARCH_7M__")
     set(ARCH "armv7-m")
     set(TUNE "cortex-m3")
-elseif(ARCH STREQUAL "cortex-m4")
+elseif (ARCH STREQUAL "cortex-m4")
     # Cortex M4 (without floating point)
     set(ARM_ARCH_FLAG "__ARM_ARCH_7EM__")
     set(ARCH "armv7e-m")

@@ -6,7 +6,7 @@ import shutil
 class CmsisConan(ConanFile):
     name = "CMSIS-DSP"
     version = "1.5.3"  # DSP package version
-    git_sha = "205984010fc4d3e3dee0e3718cee1a995e1bfecf"  # origin/develop branch currently
+    git_sha = "23b94246b6fbd2d054737cbac84e044667264271"  # origin/develop branch currently
     license = "Apache-2.0"
     author = "Torfinn Berset <torfinn@bloomlife.com>"
     url = "https://github.com/torfinnberset/CMSIS_5"
@@ -24,9 +24,9 @@ class CmsisConan(ConanFile):
         os.rename("CMSIS_5-{}".format(self.git_sha), "CMSIS_5")
 
     def build(self):
-        for file in self.exports:
-            src = "{}/{}".format(os.path.dirname(os.path.abspath(__file__)), file)
-            shutil.copy(src, "{}/{}".format(os.curdir, file))
+        for f in self.exports:
+            src = "{}/{}".format(os.path.dirname(os.path.abspath(__file__)), f)
+            shutil.copy(src, "{}/{}".format(os.curdir, f))
 
         cmake = CMake(self)
 
