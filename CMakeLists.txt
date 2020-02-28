@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.14)
 
 SET(ARCHITECTURE "x86_64" CACHE STRING "Some user-specified option")
 

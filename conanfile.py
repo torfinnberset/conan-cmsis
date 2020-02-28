@@ -1,12 +1,12 @@
-from conans import ConanFile, CMake, tools
 import os
 import shutil
+from conans import ConanFile, CMake, tools
 
 
 class CmsisConan(ConanFile):
     name = "CMSIS-DSP"
-    version = "1.5.3"  # DSP package version
-    git_sha = "23b94246b6fbd2d054737cbac84e044667264271"  # origin/develop branch currently
+    version = "1.7.0"  # DSP package version
+    git_sha = "b5f0603d6a584d1724d952fd8b0737458b90d62b"
     license = "Apache-2.0"
     author = "Torfinn Berset <torfinn@bloomlife.com>"
     url = "https://github.com/torfinnberset/CMSIS_5"
@@ -31,7 +31,9 @@ class CmsisConan(ConanFile):
         cmake = CMake(self)
 
         cmake.configure(defs={
-            "ARCHITECTURE": self.settings.arch
+            "ARCHITECTURE": self.settings.arch,
+            # Prevents ARM startup code from being generated
+            "__PROGRAM_START": None
         })
 
         cmake.build()
@@ -47,3 +49,6 @@ class CmsisConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["CMSIS-DSP"]
+
+        # Prevents ARM startup code from being generated
+        self.cpp_info.defines = ['__PROGRAM_START']
