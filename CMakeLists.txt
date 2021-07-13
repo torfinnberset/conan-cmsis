@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.20)
 
 SET(ARCHITECTURE "x86_64" CACHE STRING "Some user-specified option")
 
@@ -16,14 +16,14 @@ set(CMAKE_CXX_STANDARD 17)
 
 ################################################################################################################
 
-file(GLOB_RECURSE CMSIS_DSP_SOURCES CMSIS_5/CMSIS/DSP/Source/*.c)
+file(GLOB_RECURSE CMSIS_DSP_SOURCES "CMSIS_5/CMSIS/DSP/Source/*.c")
 
 if (ARCHITECTURE STREQUAL "x86_64")
     # Will only be compiled for native
     list(APPEND CMSIS_DSP_SOURCES arm_bitreversal.c)
 else ()
     # Will only be compiled for ARM
-    file(GLOB_RECURSE ASM_SOURCES CMSIS_5/CMSIS/DSP/Source/*.S)
+    file(GLOB_RECURSE ASM_SOURCES "CMSIS_5/CMSIS/DSP/Source/*.S")
     list(APPEND CMSIS_DSP_SOURCES ${ASM_SOURCES})
 endif ()
 
@@ -34,7 +34,8 @@ target_include_directories(
         CMSIS-DSP
         PRIVATE
             CMSIS_5/CMSIS/DSP/Include
-            CMSIS_5/CMSIS/Core/Include
+            CMSIS_5/CMSIS/DSP/PrivateInclude
+            CMSIS_5/CMSIS/Core/Include            
         SYSTEM INTERFACE
             CMSIS_5/CMSIS/DSP/Include
             CMSIS_5/CMSIS/Core/Include

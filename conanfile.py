@@ -5,8 +5,8 @@ from conans import ConanFile, CMake, tools
 
 class CmsisConan(ConanFile):
     name = "CMSIS-DSP"
-    version = "1.7.0"  # DSP package version
-    git_sha = "b5f0603d6a584d1724d952fd8b0737458b90d62b"
+    version = "1.9.0"  # DSP package version
+    git_sha = "13b9f72f212688d2306d0d085d87cbb4bf9e5d3f"
     license = "Apache-2.0"
     author = "Torfinn Berset <torfinn@bloomlife.com>"
     url = "https://github.com/torfinnberset/CMSIS_5"
